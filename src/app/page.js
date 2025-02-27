@@ -1,12 +1,12 @@
-export default function Home() {
-    return (
-      <div>
-        <h1 className="text-black">Selamat Datang di PT Mitra Jasa Power</h1>
-<p className="text-black">
-  Jasa pengiriman kendaraan, alat berat, cargo project, dan lainnya.
-</p>
+import ServiceCards from "../components/card";
+export default function Home()
+ {
+  return (
+    <div>
+      <h1 className="text-center text-2xl font-bold mb-6">Layanan Kami</h1>
+      <ServiceCards />
+    </div>
+  );
+}
 
-      </div>
-    );
-  }
   
