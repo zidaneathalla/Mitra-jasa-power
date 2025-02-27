@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-top">
           <div className="footer-logo">
-            <Image src="/logo.jpg" alt="PT Mitra Jasa Power" width={81} height={50} />
+            <Image src="/logo.jpg" alt="PT Mitra Jasa Power" width={1} height={60} />
             <p className="footer-vision">
               Our vision is to provide convenience and help increase your sales business.
             </p>
@@ -17,38 +17,45 @@ const Footer = () => {
               <Link href="#"><img src="/instagram.svg" alt="Instagram" /></Link>
             </div>
           </div>
-          <div className="footer-links">
-            <div>
-              <h4>Home</h4>
-              <Link href="#">Introducing</Link>
-              <Link href="#">Layanan</Link>
-              <Link href="#">Alasan Memilih Kami</Link>
-              <Link href="#">Testimonials</Link>
-            </div>
-            <div>
-              <h4>Tentang Kami</h4>
-              <Link href="#">Tentang Kami</Link>
-              <Link href="#">Komitmen Kami</Link>
-              <Link href="#">Tujuan Kami</Link>
-            </div>
-            <div>
-              <h4>Layanan</h4>
-              <Link href="#">Kendaraan</Link>
-              <Link href="#">Alat Berat</Link>
-              <Link href="#">Cargo Project</Link>
-              <Link href="#">Via Laut dan Darat</Link>
-              <Link href="#">Via Truck</Link>
-              <Link href="#">Via Kapal Roro</Link>
-              <Link href="#">Via Kapal Cargo</Link>
-              <Link href="#">Via Container</Link>
-            </div>
-            <div>
-              <h4>Pusat Bantuan</h4>
-              <Link href="#">FAQ</Link>
-              <Link href="#">Panduan</Link>
-              <Link href="#">Layanan & Kebijakan</Link>
-            </div>
-          </div>
+          <div className="footer-links flex flex-wrap gap-x-8">
+  <div className="space-y-4">
+    <h4 className="text-lg font-extrabold">Home</h4> 
+    <Link href="#" className="text-sm block">Introducing</Link> 
+    <Link href="#" className="text-sm block">Layanan</Link>
+    <Link href="#" className="text-sm block">Alasan Memilih Kami</Link>
+    <Link href="#" className="text-sm block">Testimonials</Link>
+  </div>
+  
+  <div className="space-y-2">
+    <h4 className="text-lg font-extrabold">Tentang Kami</h4>
+    <Link href="#" className="text-sm block">Tentang Kami</Link>
+    <Link href="#" className="text-sm block">Komitmen Kami</Link>
+    <Link href="#" className="text-sm block">Tujuan Kami</Link>
+  </div>
+  
+  <div className="space-y-2">
+  <h4 className="text-lg font-extrabold">Layanan</h4>
+  <div className="grid grid-cols-4 gap-4">
+    <Link href="#" className="text-sm block">Kendaraan</Link>
+    <Link href="#" className="text-sm block">Alat Berat</Link>
+    <Link href="#" className="text-sm block">Cargo Project</Link>
+    <Link href="#" className="text-sm block">Via Laut dan Darat</Link>
+    <Link href="#" className="text-sm block">Via Truck</Link>
+    <Link href="#" className="text-sm block">Via Kapal Roro</Link>
+    <Link href="#" className="text-sm block">Via Kapal Cargo</Link>
+    <Link href="#" className="text-sm block">Via Container</Link>
+  </div>
+</div>
+
+  
+  <div className="space-y-2">
+    <h4 className="text-lg font-extrabold">Pusat Bantuan</h4>
+    <Link href="#" className="text-sm block">FAQ</Link>
+    <Link href="#" className="text-sm block">Panduan</Link>
+    <Link href="#" className="text-sm block">Layanan & Kebijakan</Link>
+  </div>
+</div>
+
         </div>
         <div className="footer-bottom">
           <p>©2025. PT. MITRA JASA POWER. All rights reserved</p>
