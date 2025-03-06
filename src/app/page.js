@@ -1,8 +1,11 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState,useRef,useEffect} from "react";
 import { Truck, Wrench, Package } from 'lucide-react';
+import { motion, useMotionValue, animate } from "framer-motion";
+
+
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("pickup");
@@ -17,9 +20,53 @@ export default function Home() {
     { title: "Pengiriman Via Kontainer", image: "/kontainer.jpg" },
     { title: "Pengiriman Via Kapal Kargo", image: "/Kapal_Kargo.jpg" },
   ];
+    const images = [
+      "/kapal.jpg",
+      "/Kendaraan.jpg",
+      "/kontainer.jpg",
+      "/Kapal_Kargo.jpg",
+    ];
+    const containerRef = useRef(null);
+    const [width, setWidth] = useState(0);
+  
+    // Hitung total lebar konten saat komponen dimuat
+    useEffect(() => {
+      if (containerRef.current) {
+        setWidth(containerRef.current.scrollWidth - containerRef.current.offsetWidth);
+      }
+    }, []);
+
+    const testimonials = [
+        {
+          name: "Raisa Zahira",
+          location: "Bogor, Indonesia",
+          rating: 4.5,
+          review:
+            "Layanan profesional dan tepat waktu! Pengiriman alat berat kami sampai dengan aman tanpa kendala.",
+          image: "/raisa.jpg",
+        },
+        {
+          name: "Irish Wullur",
+          location: "Malang, Indonesia",
+          rating: 4.5,
+          review:
+            "Pelayanan sangat responsif dan ramah. Pengiriman kendaraan saya via kapal Roro berjalan lancar!",
+          image: "/irish_wulur.jpg",
+        },
+        {
+          name: "Critiano Ronaldo",
+          location: "Jakarta, Indonesia",
+          rating: 4.5,
+          review:
+            "Kami sudah beberapa kali menggunakan layanan ini untuk pengiriman cargo proyek. Selalu puas dengan hasilnya!",
+          image: "/ronaldo.jpg",
+        },
+      ];
+    
+  
 
   return (
-    <><div className="bg-white text-gray-900 min-h-screen flex flex-col">
+    <div className="bg-white text-gray-900 min-h-screen flex flex-col">
           <div className="grid md:grid-cols-2 items-center px-8 md:px-16 py-12 gap-8">
               <div>
                   <h1 className="text-3xl md:text-5xl font-bold">
@@ -42,25 +89,28 @@ export default function Home() {
                   <Image src="/gudang.jpg" alt="Warehouse" fill className="rounded-lg shadow-lg object-cover" />
               </div>
           </div>
-
           <div className="flex justify-center items-center bg-[#FBE6B3] py-8">
-              <div className="flex bg-white rounded-xl shadow-lg overflow-hidden">
-                  <div
-                      className={`p-6 flex items-center gap-2 cursor-pointer transition-all ${selectedOption === "pickup" ? "bg-[#F4B43A]" : "bg-white"} rounded-l-xl`}
-                      onClick={() => setSelectedOption("pickup")}
-                  >
-                      <input type="radio" checked={selectedOption === "pickup"} readOnly />
-                      <span className="font-semibold">Pick - Up</span>
-                  </div>
-                  <div
-                      className={`p-6 flex items-center gap-2 cursor-pointer transition-all ${selectedOption === "dropoff" ? "bg-[#F4B43A]" : "bg-white"} rounded-r-xl`}
-                      onClick={() => setSelectedOption("dropoff")}
-                  >
-                      <input type="radio" checked={selectedOption === "dropoff"} readOnly />
-                      <span className="font-semibold">Drop - Off</span>
-                  </div>
-              </div>
-          </div>
+    <div className="flex bg-white rounded-xl shadow-lg overflow-hidden">
+        <div
+            className={`p-6 flex items-center gap-2 cursor-pointer transition-all ${
+                selectedOption === "pickup" ? "bg-[#F4B43A]" : "bg-white"
+            } rounded-l-xl`}
+            onClick={() => setSelectedOption("pickup")}
+        >
+            <input type="radio" checked={selectedOption === "pickup"} readOnly />
+            <span className="font-semibold">Pick - Up</span>
+        </div>
+        <div
+            className={`p-6 flex items-center gap-2 cursor-pointer transition-all ${
+                selectedOption === "dropoff" ? "bg-[#F4B43A]" : "bg-white"
+            } rounded-r-xl`}
+            onClick={() => setSelectedOption("dropoff")}
+        >
+            <input type="radio" checked={selectedOption === "dropoff"} readOnly />
+            <span className="font-semibold">Drop - Off</span>
+        </div>
+    </div>
+</div>
 
           <div className="flex justify-center items-center bg-[#FBE6B3] pb-8">
               <div className="flex bg-white p-6 rounded-xl shadow-lg gap-6">
@@ -106,22 +156,21 @@ export default function Home() {
                   ))}
               </div>
           </div>
-      </div>
-      <div className="bg-white px-16 py-12">
-      <h2 className="text-center text-3xl md:text-4xl font-bold italic mb-8">
+
+          <div className="bg-white px-16 py-12">
+              <h2 className="text-center text-3xl md:text-4xl font-bold italic mb-8">
                   Kenapa Harus Memilih Kami?
               </h2>
               <p className="text-center text-lg text-gray-600 max-w-2xl mx-auto mb-10">
                   Kami adalah solusi logistik terpercaya untuk kebutuhan skala besar. Dengan armada lengkap, tim berpengalaman, dan layanan profesional, kami memastikan setiap pengiriman aman, tepat waktu, dan efisien.
               </p>
               <div className="flex justify-center items-center gap-16">
-  <div className="w-1/2 h-[400px] flex items-center justify-center rounded-xl overflow-hidden">
-    <img
-      src="/tangan.jpg"
-      alt="Kenapa Memilih Kami"
-      className="w-full h-full object-cover"
-    />
-  </div>
+                  <div className="w-1/2 h-[400px] flex items-center justify-center rounded-xl overflow-hidden">
+                      <img
+                          src="/tangan.jpg"
+                          alt="Kenapa Memilih Kami"
+                          className="w-full h-full object-cover" />
+                  </div>
                   <div className="w-1/2 flex flex-col gap-6">
                       <div className="flex items-start gap-4">
                           <div className="bg-yellow-400 p-3 rounded-lg">
@@ -158,7 +207,57 @@ export default function Home() {
                       </div>
                   </div>
               </div>
-          </div></>
+          </div>
+      
+          <div className="bg-[#F4D8A8] min-h-[50vh] flex justify-center items-center p-10 overflow-visible">
+      <motion.div ref={containerRef} className="w-full max-w-6xl overflow-visible">
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: -width, right: 0 }} // Dinamis berdasarkan total lebar konten
+          className="flex gap-6"
+        >
+          {images.map((src, index) => (
+            <motion.div
+              key={index}
+              className="min-w-[300px] md:min-w-[400px] lg:min-w-[500px] rounded-xl overflow-hidden shadow-lg flex-shrink-0"
+            >
+              <img src={src} alt={`Image ${index}`} className="w-full h-[300px] object-cover" />
+            </motion.div>
+          ))}
+        </motion.div>
+      </motion.div>
+    </div>
+
+    <div className="py-16 bg-white text-center">
+      <h2 className="text-4xl font-bold mb-2">Dipercaya oleh Ribuan Pelanggan yang Bahagia</h2>
+      <p className="text-gray-600 mb-10">
+        Kepercayaan pelanggan adalah bukti kualitas layanan kami.
+      </p>
+
+      <div className="flex justify-center gap-6 max-w-6xl mx-auto">
+        {testimonials.map((item, index) => (
+          <div
+            key={index}
+            className="bg-gray-100 rounded-xl shadow-md p-6 text-left max-w-md flex-1"
+          >
+            <div className="flex items-center gap-4">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-12 h-12 rounded-full object-cover"
+              />
+              <div className="flex-1">
+                <h3 className="font-semibold">{item.name}</h3>
+                <p className="text-sm text-gray-600">{item.location}</p>
+              </div>
+              <span className="font-bold text-lg">{item.rating}</span>
+            </div>
+            <p className="mt-4 text-gray-700">&ldquo;{item.review}&rdquo;</p>
+          </div>
+        ))}
+      </div>
+</div>
+ </div>
 
   );     
 }
