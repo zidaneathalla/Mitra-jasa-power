@@ -26,7 +26,7 @@ body {
 .header {
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 2rem;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,8 +52,9 @@ body {
 .nav-menu a {
   text-decoration: none;
   color: black;
-  font-weight: 500;
+  font-weight: 900;
   transition: color 0.3s ease;
+  font: 2rem;
 }
 
 .nav-menu a:hover {
@@ -75,7 +76,8 @@ body {
 }
 
 .btn-pesan:hover {
-  background-color: #333;
+  background-color: #f59e0b;
+  color: #e9e5e5;
 }
 
 .footer {
@@ -99,13 +101,16 @@ body {
 }
 
 .footer-logo {
-  max-width: 250px;
- margin-right: 10px;
+  max-width: 100px;
+  margin-right: 10px;
 }
 
-.footer-logo img {
-  max-width: 100%;
+.footer-logo img, .footer-logo span {
+  width: 100%;
+  height: auto;
+  display: block;
 }
+
 
 .footer-vision {
   font-size: 14px;
@@ -115,7 +120,7 @@ body {
 .footer-social {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
 }
 
 .footer-social img {
@@ -177,39 +182,3 @@ body {
   color: #facc15;
 }
 
-.service-card {
-  max-width: 350px;
-  max-height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  background-color: #000; /* Jika gambar tidak ada */
-  border-radius: 16px;
-  overflow: hidden;
-  transition: transform 0.3s ease-in-out;
-}
-
-.service-card:hover {
-  transform: scale(1.05);
-}
-
-.service-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.service-card .overlay {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 20px;
-}
-
-.service-card h3 {
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  text-align: center;
-}

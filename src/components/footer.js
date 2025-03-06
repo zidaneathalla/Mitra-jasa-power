@@ -7,7 +7,7 @@ const Footer = () => {
       <div className="container">
         <div className="footer-top">
           <div className="footer-logo">
-            <Image src="/logo.jpg" alt="PT Mitra Jasa Power" width={1} height={60} />
+            <Image src="/logo.jpg" alt="PT Mitra Jasa Power" width={80} height={60} />
             <p className="footer-vision">
               Our vision is to provide convenience and help increase your sales business.
             </p>
