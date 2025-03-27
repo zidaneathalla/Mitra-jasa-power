@@ -42,21 +42,22 @@ export default function Page() {
         </div>
 
         {/* Bagian Komitmen Kami */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between bg-white p-6 md:p-16">
-          {/* Teks Komitmen */}
-          <div className="w-full md:w-1/2">
-          <h2 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="italic text-[#425A78]">Komitmen</span>{" "}
-              <span className="text-[#F4B74D]">Kami</span>
-            </h2>
-            <ul className="mt-4 space-y-2 text-gray-700">
-              <li className="flex items-center"><span className="mr-2">✅</span> Keamanan Terjamin</li>
-              <li className="flex items-center"><span className="mr-2">✅</span> Tepat Waktu</li>
-              <li className="flex items-center"><span className="mr-2">✅</span> Layanan Profesional</li>
-              <li className="flex items-center"><span className="mr-2">✅</span> Jangkauan Luas</li>
-              <li className="flex items-center"><span className="mr-2">✅</span> Solusi Fleksibel</li>
-            </ul>
-          </div>
+        <div className="flex flex-col md:flex-row items-start md:items-center bg-white p-6 md:p-16 gap-8">
+  {/* Teks Komitmen */}
+  <div className="w-full md:w-1/2">
+    <h2 className="text-4xl md:text-6xl font-bold mb-6">
+      <span className="italic text-[#425A78]">Komitmen</span>{" "}
+      <span className="text-[#F4B74D]">Kami</span>
+    </h2>
+    <ul className="mt-4 space-y-2 text-gray-700">
+      <li className="flex items-center"><span className="mr-2">✅</span> Keamanan Terjamin</li>
+      <li className="flex items-center"><span className="mr-2">✅</span> Tepat Waktu</li>
+      <li className="flex items-center"><span className="mr-2">✅</span> Layanan Profesional</li>
+      <li className="flex items-center"><span className="mr-2">✅</span> Jangkauan Luas</li>
+      <li className="flex items-center"><span className="mr-2">✅</span> Solusi Fleksibel</li>
+    </ul>
+  </div>
+
 
           {/* Gambar */}
           <div className="w-full md:w-1/2 flex justify-center mt-6 md:mt-0">

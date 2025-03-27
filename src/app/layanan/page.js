@@ -29,6 +29,41 @@ const slides = [
       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
     image: "/cargo.jpg",
   },
+  {
+    title: "Pengiriman",
+    highlight: "Via Kapal Roro",
+    description:
+      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+    image: "/Kapal.jpg",
+  },
+  {
+    title: "Pengiriman",
+    highlight: "Via Kapal kargo",
+    description:
+      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+    image: "/Kapal_kargo.jpg",
+  },
+  {
+    title: "Pengiriman",
+    highlight: "Via Truck(Trucking)",
+    description:
+      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+    image: "/Trucking.jpg",
+  },
+  {
+    title: "Pengiriman",
+    highlight: "Via Laut Dan Darat",
+    description:
+      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+    image: "/Laut_Darat.jpg",
+  },
+  {
+    title: "Pengiriman",
+    highlight: "Via Kontainer",
+    description:
+      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+    image: "/Kontainer.jpg",
+  },
 ];
 
 export default function Layanan() {
@@ -46,7 +81,7 @@ export default function Layanan() {
           />
         </div>
         <div className="relative z-10 text-white px-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#f59e0b]">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#f59e0b] text-bold">
             Lebih Mengenal Layanan Kami
           </h2>
           <p className="mt-4 text-lg max-w-3xl">
@@ -69,7 +104,7 @@ export default function Layanan() {
         >
           {slides.map((slide, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-col md:flex-row items-center justify-center gap-10">
+              <div className="flex flex-col md:flex-row items-center justify-center gap-10 mb-12 md:mb-16">
                 {/* Gambar */}
                 <div className="w-full md:w-1/2 flex justify-center">
                   <img

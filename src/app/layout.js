@@ -1,10 +1,12 @@
 import Header from "../components/header";
 import Footer from "../components/footer";
 import "../styles/globals.css";
+import { ImageIcon } from "lucide-react";
 
 export const metadata = {
   title: "PT Mitra Jasa Power",
   description: "Jasa pengiriman kendaraan, alat berat, cargo project, dll.",
+  Image: "/logo.jpg"
 };
 
 export default function RootLayout({ children }) {
