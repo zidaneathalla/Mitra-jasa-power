@@ -1,31 +1,53 @@
-"use client"; // Pakai use client karena kita gunakan state
+"use client";
 
-import { useState } from "react";
+import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function BantuanDetailPage({ params }) {
-  const { slug } = params;
+  const { slug } = use(params); // ✅ fix: unwrapping params
   const router = useRouter();
-  
-  // State untuk konten aktif
-  const [selectedTopic, setSelectedTopic] = useState(slug);
 
-  // Data menu sidebar
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const sidebarItems = [
     { title: "FAQ", slug: "faq" },
     { title: "Panduan", slug: "panduan" },
     { title: "Layanan & Kebijakan", slug: "layanan-kebijakan" },
   ];
 
-  // Data konten berdasarkan slug
-  const contentData = {
-    faq: "Ini adalah halaman FAQ yang berisi pertanyaan yang sering diajukan.",
-    panduan: "Ini adalah halaman Panduan untuk membantu pengguna.",
-    "layanan-kebijakan": "Halaman ini berisi informasi tentang layanan dan kebijakan kami.",
+  const kategoriMap = {
+    faq: "FAQ",
+    panduan: "Panduan",
+    "layanan-kebijakan": "Layanan & Kebijakan"
+  };
+
+  useEffect(() => {
+    const kategori = kategoriMap[slug]; // Ambil nama kategori asli dari slug
+  
+    setLoading(true);
+    fetch("http://localhost:8000/api/pusatbantuan")
+      .then((res) => res.json())
+      .then((allData) => {
+        const filtered = allData.filter(item => item.kategori === kategori);
+        setData(filtered);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Gagal memuat data:", err);
+        setLoading(false);
+      });
+  }, [slug]);
+  
+
+  const handleChangeTopic = (topicSlug) => {
+    if (topicSlug !== slug) {
+      router.push(`/bantuan/${topicSlug}`);
+    }
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       {/* Sidebar */}
       <aside className="w-1/4 bg-white p-6 border-r text-gray-800">
         <h2 className="text-xl font-bold mb-4 text-black">Pusat Bantuan</h2>
@@ -33,9 +55,9 @@ export default function BantuanDetailPage({ params }) {
           {sidebarItems.map((item) => (
             <li key={item.slug} className="mb-2">
               <button
-                onClick={() => setSelectedTopic(item.slug)}
+                onClick={() => handleChangeTopic(item.slug)}
                 className={`block w-full text-left p-3 rounded-md ${
-                  selectedTopic === item.slug
+                  slug === item.slug
                     ? "bg-gray-300 text-black font-bold"
                     : "hover:bg-gray-200"
                 }`}
@@ -47,14 +69,26 @@ export default function BantuanDetailPage({ params }) {
         </ul>
       </aside>
 
-      {/* Konten Detail */}
+      {/* Konten */}
       <main className="flex-1 p-6 bg-white text-black">
-        <h1 className="text-2xl font-bold text-black">
-          {`Detail ${sidebarItems.find((item) => item.slug === selectedTopic)?.title}`}
+        <h1 className="text-2xl font-bold text-black mb-4">
+          {sidebarItems.find((item) => item.slug === slug)?.title}
         </h1>
-        <p className="mt-4 text-lg text-gray-800">
-          {contentData[selectedTopic] || "Maaf, halaman yang Anda cari tidak ditemukan."}
-        </p>
+
+        {loading ? (
+          <p>Memuat data...</p>
+        ) : data.length > 0 ? (
+          <div className="space-y-6">
+            {data.map((item) => (
+              <div key={item.id} className="bg-yellow-100 p-4 rounded-md shadow-md">
+                <h3 className="text-lg font-semibold">{item.pertanyaan}</h3>
+                <p className="text-gray-800 mt-2">{item.jawaban}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-600 italic">Belum ada konten untuk kategori ini.</p>
+        )}
       </main>
     </div>
   );
