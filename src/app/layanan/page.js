@@ -1,4 +1,5 @@
 'use client';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination } from 'swiper/modules';
@@ -7,66 +8,84 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const slides = [
-  {
-    title: "Pengiriman",
-    highlight: "Kendaraan",
-    description:
-      "Kami melayani pengiriman mobil, motor, truk, dan kendaraan niaga dengan metode towing, car carrier, kapal Roro, dan kontainer. Pengiriman dilengkapi pelacakan real-time dan asuransi untuk keamanan maksimal.",
-    image: "/Kendaraan.jpg",
-  },
-  {
-    title: "Pengiriman",
-    highlight: "Alat Berat",
-    description:
-      "Kami menyediakan layanan pengiriman alat berat seperti excavator, crane, dan bulldozer dengan keamanan tinggi dan asuransi.",
-    image: "/Alat_Berat.jpg",
-  },
-  {
-    title: "Pengiriman",
-    highlight: "Cargo Proyek",
-    description:
-      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/cargo.jpg",
-  },
-  {
-    title: "Pengiriman",
-    highlight: "Via Kapal Roro",
-    description:
-      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/Kapal.jpg",
-  },
-  {
-    title: "Pengiriman",
-    highlight: "Via Kapal kargo",
-    description:
-      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/Kapal_kargo.jpg",
-  },
-  {
-    title: "Pengiriman",
-    highlight: "Via Truck(Trucking)",
-    description:
-      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/Trucking.jpg",
-  },
-  {
-    title: "Pengiriman",
-    highlight: "Via Laut Dan Darat",
-    description:
-      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/Laut_Darat.jpg",
-  },
-  {
-    title: "Pengiriman",
-    highlight: "Via Kontainer",
-    description:
-      "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/Kontainer.jpg",
-  },
-];
+// const slides = [
+//   {
+//     title: "Pengiriman",
+//     highlight: "Kendaraan",
+//     description:
+//       "Kami melayani pengiriman mobil, motor, truk, dan kendaraan niaga dengan metode towing, car carrier, kapal Roro, dan kontainer. Pengiriman dilengkapi pelacakan real-time dan asuransi untuk keamanan maksimal.",
+//     image: "/Kendaraan.jpg",
+//   },
+//   {
+//     title: "Pengiriman",
+//     highlight: "Alat Berat",
+//     description:
+//       "Kami menyediakan layanan pengiriman alat berat seperti excavator, crane, dan bulldozer dengan keamanan tinggi dan asuransi.",
+//     image: "/Alat_Berat.jpg",
+//   },
+//   {
+//     title: "Pengiriman",
+//     highlight: "Cargo Proyek",
+//     description:
+//       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+//     image: "/cargo.jpg",
+//   },
+//   {
+//     title: "Pengiriman",
+//     highlight: "Via Kapal Roro",
+//     description:
+//       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+//     image: "/Kapal.jpg",
+//   },
+//   {
+//     title: "Pengiriman",
+//     highlight: "Via Kapal kargo",
+//     description:
+//       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+//     image: "/Kapal_kargo.jpg",
+//   },
+//   {
+//     title: "Pengiriman",
+//     highlight: "Via Truck(Trucking)",
+//     description:
+//       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+//     image: "/Trucking.jpg",
+//   },
+//   {
+//     title: "Pengiriman",
+//     highlight: "Via Laut Dan Darat",
+//     description:
+//       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+//     image: "/Laut_Darat.jpg",
+//   },
+//   {
+//     title: "Pengiriman",
+//     highlight: "Via Kontainer",
+//     description:
+//       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
+//     image: "/Kontainer.jpg",
+//   },
+// ];
 
 export default function Layanan() {
+
+  const [slides, setSlides] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/services')
+      .then((res) => res.json())
+      .then((data) => {
+        const mappedSlides = data.map((item) => ({
+          title: "Pengiriman", // atau item.title jika sesuai
+          highlight: item.title,
+          description: item.description,
+          image: `http://localhost:8000/storage/${item.image}`,
+        }));
+        setSlides(mappedSlides);
+      })
+      .catch((err) => console.error('Error fetching services:', err));
+  }, []);
+
   return (
     <section className="relative w-full flex flex-col items-center text-center">
       {/* Background Image */}

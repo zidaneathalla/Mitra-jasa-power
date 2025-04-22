@@ -1,25 +1,28 @@
 "use client";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState,useRef,useEffect} from "react";
 import { Truck, Wrench, Package } from 'lucide-react';
-import { motion, useMotionValue, animate } from "framer-motion";
-
-
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("pickup");
 
-  const services = [
-    { title: "Pengiriman Kendaraan", image: "/Kendaraan.jpg" },
-    { title: "Pengiriman Alat Berat", image: "/Alat_Berat.jpg" },
-    { title: "Pengiriman Cargo Project", image: "/Cargo.jpg" },
-    { title: "Pengiriman Via Kapal Roro", image: "/Kapal.jpg" },
-    { title: "Pengiriman Via Truck (Trucking)", image: "/Trucking.jpg" },
-    { title: "Pengiriman Via Laut Dan Darat", image: "/Laut_Darat.jpg" },
-    { title: "Pengiriman Via Kontainer", image: "/kontainer.jpg" },
-    { title: "Pengiriman Via Kapal Kargo", image: "/Kapal_Kargo.jpg" },
-  ];
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/services')
+      .then((res) => res.json())
+      .then((data) => {
+        const mapped = data.map((item) => ({
+          title: item.title,
+          image: `http://localhost:8000/storage/${item.image}`,
+        }));
+        setServices(mapped);
+      })
+      .catch((err) => console.error('Error fetching services:', err));
+  }, []);
+
     const images = [
       "/kapal.jpg",
       "/Kendaraan.jpg",
@@ -36,32 +39,32 @@ export default function Home() {
       }
     }, []);
 
-    const testimonials = [
-        {
-          name: "Raisa Zahira",
-          location: "Bogor, Indonesia",
-          rating: 4.5,
-          review:
-            "Layanan profesional dan tepat waktu! Pengiriman alat berat kami sampai dengan aman tanpa kendala.",
-          image: "/raisa.jpg",
-        },
-        {
-          name: "Irish Wullur",
-          location: "Malang, Indonesia",
-          rating: 4.5,
-          review:
-            "Pelayanan sangat responsif dan ramah. Pengiriman kendaraan saya via kapal Roro berjalan lancar!",
-          image: "/irish_wulur.jpg",
-        },
-        {
-          name: "Critiano Ronaldo",
-          location: "Jakarta, Indonesia",
-          rating: 4.5,
-          review:
-            "Kami sudah beberapa kali menggunakan layanan ini untuk pengiriman cargo proyek. Selalu puas dengan hasilnya!",
-          image: "/ronaldo.jpg",
-        },
-      ];
+    
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/testimonials"); // ganti sesuai URL API kamu
+        const data = await res.json();
+
+        // Sesuaikan field API ke frontend
+        const mapped = data.map((item) => ({
+          name: item.nama,
+          location: item.asal,
+          rating: item.rating,
+          review: item.testimoni,
+          image: "/ronaldo.jpg", // default atau dari backend jika ada
+        }));
+
+        setTestimonials(mapped);
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
     
   
 
@@ -112,31 +115,31 @@ export default function Home() {
     </div>
 </div>
 
-          <div className="flex justify-center items-center bg-[#FBE6B3] pb-8">
-              <div className="flex bg-white p-6 rounded-xl shadow-lg gap-6">
-                  <div>
-                      <p className="font-bold">Locations</p>
-                      <select className="mt-1 border-b-2 border-gray-400 focus:outline-none">
-                          <option>Select your city</option>
-                      </select>
-                  </div>
-                  <div>
-                      <p className="font-bold">Date</p>
-                      <select className="mt-1 border-b-2 border-gray-400 focus:outline-none">
-                          <option>Select your date</option>
-                      </select>
-                  </div>
-                  <div>
-                      <p className="font-bold">Time</p>
-                      <select className="mt-1 border-b-2 border-gray-400 focus:outline-none">
-                          <option>Select your time</option>
-                      </select>
-                  </div>
-                  <button className="bg-black text-[#F4B43A] font-bold px-6 py-2 rounded-md self-end">
-                      Search
-                  </button>
-              </div>
+        <div className="flex justify-center items-center bg-[#FBE6B3] pb-8">
+          <div className="flex bg-white p-6 rounded-xl shadow-lg gap-6">
+            <div>
+              <p className="font-bold">Locations</p>
+              <select className="mt-1 border-b-2 border-gray-400 focus:outline-none">
+                <option>Select your city</option>
+              </select>
+            </div>
+            <div>
+              <p className="font-bold">Date</p>
+              <select className="mt-1 border-b-2 border-gray-400 focus:outline-none">
+                <option>Select your date</option>
+              </select>
+            </div>
+            <div>
+              <p className="font-bold">Time</p>
+              <select className="mt-1 border-b-2 border-gray-400 focus:outline-none">
+                <option>Select your time</option>
+              </select>
+            </div>
+            <button className="bg-black text-[#F4B43A] font-bold px-6 py-2 rounded-md self-end">
+              Search
+            </button>
           </div>
+        </div>
 
           <div className="px-8 md:px-16 py-12">
               <h2 className="text-center text-3xl md:text-4xl font-bold italic mb-8">
