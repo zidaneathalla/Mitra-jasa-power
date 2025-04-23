@@ -6,7 +6,7 @@ export default function Page() {
           {/* Bagian Gambar */}
           <div className="flex flex-1 flex-col items-start relative mt-[80px] mb-[60px] md:mt-[120px] md:mb-[104px] md:mr-[64px]">
             <img
-              src="https://storage.googleapis.com/tagjs-prod.appspot.com/JLPlDhJ5JR/iafd4e38.png"
+              src="tentangkami.png"
               className="w-full md:w-[471px] h-[500px] md:h-[700px] rounded-[10px] object-cover"
               alt="Tentang Kami"
             />

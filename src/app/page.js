@@ -65,6 +65,25 @@ export default function Home() {
 
     fetchTestimonials();
   }, []);
+
+
+  const [galleryImages, setGalleryImages] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/gallery")
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          const mapped = data.map((item) => `http://localhost:8000/storage/${item.image}`);
+          setGalleryImages(mapped);
+        } else {
+          console.error("Data tidak sesuai format:", data);
+        }
+      })
+      .catch((err) => console.error("Error fetching gallery:", err));
+  }, []);
+  
+
     
   
 
@@ -213,23 +232,25 @@ export default function Home() {
           </div>
       
           <div className="bg-[#F4D8A8] min-h-[50vh] flex justify-center items-center p-10 overflow-visible">
-      <motion.div ref={containerRef} className="w-full max-w-6xl overflow-visible">
+  <motion.div ref={containerRef} className="w-full max-w-6xl overflow-visible">
+    <motion.div
+      drag="x"
+      dragConstraints={{ left: -width, right: 0 }}
+      className="flex gap-6"
+    >
+      {galleryImages.map((src, index) => (
         <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }} // Dinamis berdasarkan total lebar konten
-          className="flex gap-6"
+          key={index}
+          className="min-w-[300px] md:min-w-[400px] lg:min-w-[500px] rounded-xl overflow-hidden shadow-lg flex-shrink-0"
         >
-          {images.map((src, index) => (
-            <motion.div
-              key={index}
-              className="min-w-[300px] md:min-w-[400px] lg:min-w-[500px] rounded-xl overflow-hidden shadow-lg flex-shrink-0"
-            >
-              <img src={src} alt={`Image ${index}`} className="w-full h-[300px] object-cover" />
-            </motion.div>
-          ))}
+          <img src={src} alt={`Gallery ${index}`} className="w-full h-[300px] object-cover" />
         </motion.div>
-      </motion.div>
-    </div>
+      ))}
+
+    </motion.div>
+  </motion.div>
+</div>
+
 
     <div className="py-16 bg-white text-center">
       <h2 className="text-4xl font-bold mb-2">Dipercaya oleh Ribuan Pelanggan yang Bahagia</h2>
