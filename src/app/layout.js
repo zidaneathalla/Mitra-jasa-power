@@ -6,7 +6,11 @@ import { ImageIcon } from "lucide-react";
 export const metadata = {
   title: "PT Mitra Jasa Power",
   description: "Jasa pengiriman kendaraan, alat berat, cargo project, dll.",
-  Image: "/logo.jpg"
+  icons: {
+    icon: "/logobundar.png",
+    shortcut: "/logo.jpg",
+    apple: "/logo.jpg",
+  },
 };
 
 export default function RootLayout({ children }) {

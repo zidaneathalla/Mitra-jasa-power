@@ -9,7 +9,7 @@ export default function Navbar() {
   return (
     <header className="header flex items-center justify-between p-4">
       {/* Logo */}
-      <div className="logo">
+      <div className="logo ml-10">
           <img src="/logo.jpg" alt="logo mitra" />
 
       </div>
@@ -53,7 +53,7 @@ export default function Navbar() {
     {/* Button Pesan Sekarang */}
 <div>
   <Link href="https://wa.me/6282114352721" target="_blank">
-    <span className="btn-pesan bg-black text-white px-4 py-2 rounded-lg transition-colors duration-300 hover:bg-[f59e0b]]">
+    <span className="btn-pesan bg-black text-white px-3 py-1 rounded-lg transition-colors duration-300 hover:bg-[f59e0b]] mr-14">
       Pesan Sekarang
     </span>
   </Link>
