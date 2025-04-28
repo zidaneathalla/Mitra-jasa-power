@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Swal from 'sweetalert2';
 
 export default function Bantuan() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -72,7 +73,11 @@ export default function Bantuan() {
       setSearchResults(matches);
     } else {
       setSearchResults([]);
-      alert("Pertanyaan tidak ditemukan 😥");
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Pertanyaan tidak ditemukan 😥',
+        });
     }
   };
 
