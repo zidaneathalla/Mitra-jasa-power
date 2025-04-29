@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { Truck, Wrench, Package, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star } from "lucide-react";
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("pickup");
@@ -280,32 +281,41 @@ export default function Home() {
 </div>
 
 
-      {/* Testimonials */}
-      <div className="py-16 bg-white text-center">
-        <h2 className="text-4xl font-bold mb-2">
-          Dipercaya oleh Ribuan Pelanggan yang Bahagia
-        </h2>
-        <p className="text-gray-600 mb-10">
-          Kepercayaan pelanggan adalah bukti kualitas layanan kami.
-        </p>
-        <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
-          {testimonials.map((item, index) => (
-            <div
-              key={index}
-              className="bg-gray-100 rounded-xl shadow-md p-6 text-left max-w-md flex-1"
-            >
-              <div className="flex justify-between items-center mb-2">
-                <div>
-                  <h3 className="font-semibold">{item.name}</h3>
-                  <p className="text-sm text-gray-600">{item.location}</p>
-                </div>
-                <span className="font-bold text-lg">{item.rating}</span>
-              </div>
-              <p className="mt-2 text-gray-700">&ldquo;{item.review}&rdquo;</p>
-            </div>
-          ))}
+{/* Testimonials */}
+<div className="py-16 bg-white text-center">
+  <h2 className="text-4xl font-bold mb-2">
+    Dipercaya oleh Ribuan Pelanggan yang Bahagia
+  </h2>
+  <p className="text-gray-600 mb-10">
+    Kepercayaan pelanggan adalah bukti kualitas layanan kami.
+  </p>
+  <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
+    {testimonials.map((item, index) => (
+      <div
+        key={index}
+        className="bg-gray-100 rounded-xl shadow-md p-6 text-left max-w-md flex-1"
+      >
+        <div className="flex justify-between items-center mb-2">
+          <div>
+            <h3 className="font-semibold">{item.name}</h3>
+            <p className="text-sm text-gray-600">{item.location}</p>
+          </div>
+          {/* Rating Stars */}
+          <div className="flex gap-1">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star
+                key={i}
+                size={18}
+                className={i < item.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"}
+              />
+            ))}
+          </div>
         </div>
+        <p className="mt-2 text-gray-700">&ldquo;{item.review}&rdquo;</p>
       </div>
+    ))}
+  </div>
+</div>
     </div>
   );
 }
