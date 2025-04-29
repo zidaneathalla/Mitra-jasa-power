@@ -14,8 +14,8 @@ export default function Page() {
             <div className="flex flex-col bg-[#E6E6E6] w-full md:w-[477px] absolute bottom-4 md:bottom-[59px] right-0 rounded-[10px] p-4">
               <div className="flex items-center">
                 <img
-                  src="https://storage.googleapis.com/tagjs-prod.appspot.com/JLPlDhJ5JR/v17nbbfg.png"
-                  className="w-[54px] h-[54px] mr-4 object-cover"
+                  src="owner.jpeg"
+                  className="w-[54px] h-[54px] mr-4 object-cover rounded-full"
                   alt="Founder"
                 />
                 <div>
@@ -27,6 +27,7 @@ export default function Page() {
                 “PT Mitra Jasa Power hadir untuk memberikan layanan pengiriman yang aman, cepat, dan terpercaya. Kami siap menjadi mitra logistik terbaik untuk kebutuhan bisnis Anda.”
               </p>
             </div>
+
           </div>
 
           {/* Bagian Teks */}

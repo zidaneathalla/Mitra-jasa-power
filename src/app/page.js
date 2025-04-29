@@ -3,79 +3,72 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import { Truck, Wrench, Package } from "lucide-react";
+import { Truck, Wrench, Package, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("pickup");
-
   const [services, setServices] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
+  const [galleryImages, setGalleryImages] = useState([]);
+  const containerRef = useRef(null);
+  const [width, setWidth] = useState(0);
+  const [x, setX] = useState(0);
 
+  const scrollLeft = () => {
+    if (containerRef.current) {
+      const scrollAmount = containerRef.current.offsetWidth * 0.8;
+      const newX = Math.min(x + scrollAmount, 0);
+      setX(newX);
+    }
+  };
+  
+  const scrollRight = () => {
+    if (containerRef.current) {
+      const scrollAmount = containerRef.current.offsetWidth * 0.8;
+      const newX = Math.max(x - scrollAmount, -width);
+      setX(newX);
+    }
+  };
+  
   useEffect(() => {
     fetch("http://localhost:8000/api/services")
       .then((res) => res.json())
       .then((data) => {
         const mapped = data.map((item) => ({
           title: item.title,
-          image: `http://localhost:8000/storage/${item.image}`,
+          image: item.image
+            ? `http://localhost:8000/storage/${item.image}`
+            : "/fallback.jpg",
         }));
         setServices(mapped);
       })
       .catch((err) => console.error("Error fetching services:", err));
   }, []);
 
-  const images = [
-    "/kapal.jpg",
-    "/Kendaraan.jpg",
-    "/kontainer.jpg",
-    "/Kapal_Kargo.jpg",
-  ];
-  const containerRef = useRef(null);
-  const [width, setWidth] = useState(0);
-
-  // Hitung total lebar konten saat komponen dimuat
   useEffect(() => {
-    if (containerRef.current) {
-      setWidth(
-        containerRef.current.scrollWidth - containerRef.current.offsetWidth
-      );
-    }
-  }, []);
-
-  const [testimonials, setTestimonials] = useState([]);
-
-  useEffect(() => {
-    const fetchTestimonials = async () => {
-      try {
-        const res = await fetch("http://localhost:8000/api/testimonials"); // ganti sesuai URL API kamu
-        const data = await res.json();
-
-        // Sesuaikan field API ke frontend
+    fetch("http://localhost:8000/api/testimonials")
+      .then((res) => res.json())
+      .then((data) => {
         const mapped = data.map((item) => ({
           name: item.nama,
           location: item.asal,
           rating: item.rating,
           review: item.testimoni,
-          image: "/ronaldo.jpg", // default atau dari backend jika ada
         }));
-
         setTestimonials(mapped);
-      } catch (error) {
-        console.error("Error fetching testimonials:", error);
-      }
-    };
-
-    fetchTestimonials();
+      })
+      .catch((err) => console.error("Error fetching testimonials:", err));
   }, []);
-
-  const [galleryImages, setGalleryImages] = useState([]);
 
   useEffect(() => {
     fetch("http://localhost:8000/api/gallery")
       .then((res) => res.json())
       .then((data) => {
         if (Array.isArray(data)) {
-          const mapped = data.map(
-            (item) => `http://localhost:8000/storage/${item.image}`
+          const mapped = data.map((item) =>
+            item.image
+              ? `http://localhost:8000/storage/${item.image}`
+              : "/fallback.jpg"
           );
           setGalleryImages(mapped);
         } else {
@@ -85,8 +78,18 @@ export default function Home() {
       .catch((err) => console.error("Error fetching gallery:", err));
   }, []);
 
+  useEffect(() => {
+    if (containerRef.current) {
+      const totalWidth =
+        containerRef.current.scrollWidth - containerRef.current.offsetWidth;
+      setWidth(totalWidth);
+      setX(0); // Reset posisi scroll saat container berubah
+    }
+  }, [galleryImages]);
+
   return (
     <div className="bg-white text-gray-900 min-h-screen flex flex-col">
+      {/* Hero Section */}
       <div className="grid md:grid-cols-2 items-center px-8 md:px-16 py-12 gap-8">
         <div>
           <h1 className="text-3xl md:text-5xl font-bold">
@@ -111,12 +114,50 @@ export default function Home() {
             src="/gudang.jpg"
             alt="Warehouse"
             fill
+            sizes="(max-width: 768px) 100vw, 50vw"
             className="rounded-lg shadow-lg object-cover"
           />
         </div>
       </div>
-   
 
+      {/* Pickup / Dropoff Options */}
+      <div className="flex justify-center items-center bg-[#FBE6B3] py-8">
+        <div className="flex bg-white rounded-xl shadow-lg overflow-hidden">
+          {["pickup", "dropoff"].map((option, i) => (
+            <div
+              key={i}
+              className={`p-6 flex items-center gap-2 cursor-pointer transition-all ${
+                selectedOption === option ? "bg-[#F4B43A]" : "bg-white"
+              } ${option === "pickup" ? "rounded-l-xl" : "rounded-r-xl"}`}
+              onClick={() => setSelectedOption(option)}
+            >
+              <input type="radio" checked={selectedOption === option} readOnly />
+              <span className="font-semibold">
+                {option === "pickup" ? "Pick - Up" : "Drop - Off"}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Search Filter */}
+      <div className="flex justify-center items-center bg-[#FBE6B3] pb-8">
+        <div className="flex bg-white p-6 rounded-xl shadow-lg gap-6">
+          {["Locations", "Date", "Time"].map((label, i) => (
+            <div key={i}>
+              <p className="font-bold">{label}</p>
+              <select className="mt-1 border-b-2 border-gray-400 focus:outline-none">
+                <option>Select your {label.toLowerCase()}</option>
+              </select>
+            </div>
+          ))}
+          <button className="bg-black text-[#F4B43A] font-bold px-6 py-2 rounded-md self-end">
+            Search
+          </button>
+        </div>
+      </div>
+
+      {/* Services Section */}
       <div className="px-8 md:px-16 py-12">
         <h2 className="text-center text-3xl md:text-4xl font-bold italic mb-8">
           Jasa Ekspedisi Kami
@@ -144,14 +185,15 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Why Choose Us */}
       <div className="bg-white px-16 py-12">
         <h2 className="text-center text-3xl md:text-4xl font-bold italic mb-8">
           Kenapa Harus Memilih Kami?
         </h2>
         <p className="text-center text-lg text-gray-600 max-w-2xl mx-auto mb-10">
-          Kami adalah solusi logistik terpercaya untuk kebutuhan skala besar.
-          Dengan armada lengkap, tim berpengalaman, dan layanan profesional,
-          kami memastikan setiap pengiriman aman, tepat waktu, dan efisien.
+          Kami adalah solusi logistik terpercaya untuk kebutuhan skala besar. Dengan armada
+          lengkap, tim berpengalaman, dan layanan profesional, kami memastikan setiap
+          pengiriman aman, tepat waktu, dan efisien.
         </p>
         <div className="flex justify-center items-center gap-16">
           <div className="w-1/2 h-[400px] flex items-center justify-center rounded-xl overflow-hidden">
@@ -162,76 +204,83 @@ export default function Home() {
             />
           </div>
           <div className="w-1/2 flex flex-col gap-6">
-            <div className="flex items-start gap-4">
-              <div className="bg-yellow-400 p-3 rounded-lg">
-                <Truck size={32} className="text-black" />
+            {[
+              {
+                icon: <Truck size={32} className="text-black" />,
+                title: "Pengiriman Cepat & Terjamin",
+                desc: "Kami memastikan setiap pengiriman dilakukan sesuai jadwal, aman, dan tanpa hambatan.",
+              },
+              {
+                icon: <Wrench size={32} className="text-black" />,
+                title: "Armada Lengkap & Terawat",
+                desc: "Kami memiliki berbagai jenis armada, termasuk truk, kapal Roro, dan kontainer, yang selalu siap untuk pengiriman.",
+              },
+              {
+                icon: <Package size={32} className="text-black" />,
+                title: "Layanan Profesional",
+                desc: "Siap memberikan solusi terbaik dan menangani setiap pengiriman dengan penuh tanggung jawab.",
+              },
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-4">
+                <div className="bg-yellow-400 p-3 rounded-lg">{item.icon}</div>
+                <div>
+                  <h3 className="text-xl font-semibold">{item.title}</h3>
+                  <p className="text-gray-600">{item.desc}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold">
-                  Pengiriman Cepat & Terjamin
-                </h3>
-                <p className="text-gray-600">
-                  Kami memastikan setiap pengiriman dilakukan sesuai jadwal,
-                  aman, dan tanpa hambatan.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="bg-yellow-400 p-3 rounded-lg">
-                <Wrench size={32} className="text-black" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold">
-                  Armada Lengkap & Terawat
-                </h3>
-                <p className="text-gray-600">
-                  Kami memiliki berbagai jenis armada, termasuk truk, kapal
-                  Roro, dan kontainer, yang selalu siap untuk pengiriman.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-4">
-              <div className="bg-yellow-400 p-3 rounded-lg">
-                <Package size={32} className="text-black" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold">Layanan Profesional</h3>
-                <p className="text-gray-600">
-                  Siap memberikan solusi terbaik dan menangani setiap pengiriman
-                  dengan penuh tanggung jawab.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="bg-[#F4D8A8] min-h-[50vh] flex justify-center items-center p-10 overflow-visible">
-        <motion.div
-          ref={containerRef}
-          className="w-full max-w-6xl overflow-visible"
-        >
-          <motion.div
-            drag="x"
-            dragConstraints={{ left: -width, right: 0 }}
-            className="flex gap-6"
-          >
-            {galleryImages.map((src, index) => (
-              <motion.div
-                key={index}
-                className="min-w-[300px] md:min-w-[400px] lg:min-w-[500px] rounded-xl overflow-hidden shadow-lg flex-shrink-0"
-              >
-                <img
-                  src={src}
-                  alt={`Gallery ${index}`}
-                  className="w-full h-[300px] object-cover"
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
+      {/* Gallery */}
+      <div className="bg-[#F4D8A8] min-h-[50vh] flex justify-center items-center p-10 relative overflow-hidden">
+  {/* Left Arrow */}
+  <button
+    onClick={() => {
+      if (containerRef.current) {
+        containerRef.current.scrollBy({ left: -containerRef.current.offsetWidth * 0.8, behavior: "smooth" });
+      }
+    }}
+    className="absolute left-4 z-10 bg-white/70 hover:bg-white rounded-full p-2 shadow"
+  >
+    <ChevronLeft />
+  </button>
 
+  {/* Right Arrow */}
+  <button
+    onClick={() => {
+      if (containerRef.current) {
+        containerRef.current.scrollBy({ left: containerRef.current.offsetWidth * 0.8, behavior: "smooth" });
+      }
+    }}
+    className="absolute right-4 z-10 bg-white/70 hover:bg-white rounded-full p-2 shadow"
+  >
+    <ChevronRight />
+  </button>
+
+  {/* Scrollable Gallery */}
+  <div
+    ref={containerRef}
+    className="w-full flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory px-6 scrollbar-hide"
+  >
+    {galleryImages.map((src, index) => (
+      <div
+        key={index}
+        className="min-w-[300px] md:min-w-[400px] lg:min-w-[500px] snap-start rounded-xl overflow-hidden shadow-lg flex-shrink-0"
+      >
+        <img
+          src={src}
+          alt={`Gallery ${index}`}
+          className="w-full h-[300px] object-cover"
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
+
+      {/* Testimonials */}
       <div className="py-16 bg-white text-center">
         <h2 className="text-4xl font-bold mb-2">
           Dipercaya oleh Ribuan Pelanggan yang Bahagia
@@ -239,26 +288,20 @@ export default function Home() {
         <p className="text-gray-600 mb-10">
           Kepercayaan pelanggan adalah bukti kualitas layanan kami.
         </p>
-
-        <div className="flex justify-center gap-6 max-w-6xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
           {testimonials.map((item, index) => (
             <div
               key={index}
               className="bg-gray-100 rounded-xl shadow-md p-6 text-left max-w-md flex-1"
             >
-              <div className="flex items-center gap-4">
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div className="flex-1">
+              <div className="flex justify-between items-center mb-2">
+                <div>
                   <h3 className="font-semibold">{item.name}</h3>
                   <p className="text-sm text-gray-600">{item.location}</p>
                 </div>
                 <span className="font-bold text-lg">{item.rating}</span>
               </div>
-              <p className="mt-4 text-gray-700">&ldquo;{item.review}&rdquo;</p>
+              <p className="mt-2 text-gray-700">&ldquo;{item.review}&rdquo;</p>
             </div>
           ))}
         </div>
