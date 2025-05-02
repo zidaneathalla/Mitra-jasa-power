@@ -121,42 +121,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Pickup / Dropoff Options */}
-      <div className="flex justify-center items-center bg-[#FBE6B3] py-8">
-        <div className="flex bg-white rounded-xl shadow-lg overflow-hidden">
-          {["pickup", "dropoff"].map((option, i) => (
-            <div
-              key={i}
-              className={`p-6 flex items-center gap-2 cursor-pointer transition-all ${
-                selectedOption === option ? "bg-[#F4B43A]" : "bg-white"
-              } ${option === "pickup" ? "rounded-l-xl" : "rounded-r-xl"}`}
-              onClick={() => setSelectedOption(option)}
-            >
-              <input type="radio" checked={selectedOption === option} readOnly />
-              <span className="font-semibold">
-                {option === "pickup" ? "Pick - Up" : "Drop - Off"}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Search Filter */}
-      <div className="flex justify-center items-center bg-[#FBE6B3] pb-8">
-        <div className="flex bg-white p-6 rounded-xl shadow-lg gap-6">
-          {["Locations", "Date", "Time"].map((label, i) => (
-            <div key={i}>
-              <p className="font-bold">{label}</p>
-              <select className="mt-1 border-b-2 border-gray-400 focus:outline-none">
-                <option>Select your {label.toLowerCase()}</option>
-              </select>
-            </div>
-          ))}
-          <button className="bg-black text-[#F4B43A] font-bold px-6 py-2 rounded-md self-end">
-            Search
-          </button>
-        </div>
-      </div>
+     
 
       {/* Services Section */}
       <div className="px-8 md:px-16 py-12">
