@@ -27,7 +27,7 @@ const slides = [
     highlight: "Cargo Proyek",
     description:
       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/cargo.jpg",
+    image: "/Cargo.jpg",
   },
   {
     title: "Pengiriman",
@@ -41,7 +41,7 @@ const slides = [
     highlight: "Via Kapal kargo",
     description:
       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/Kapal_kargo.jpg",
+    image: "/Kapal_Kargo.jpg",
   },
   {
     title: "Pengiriman",
@@ -62,7 +62,7 @@ const slides = [
     highlight: "Via Kontainer",
     description:
       "Layanan pengiriman cargo proyek untuk kebutuhan industri dan konstruksi dengan solusi logistik terbaik.",
-    image: "/Kontainer.jpg",
+    image: "/kontainer.jpg",
   },
 ];
 

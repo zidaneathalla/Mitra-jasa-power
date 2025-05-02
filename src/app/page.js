@@ -21,7 +21,7 @@ export default function Home() {
     { title: "Pengiriman Via Kapal Kargo", image: "/Kapal_Kargo.jpg" },
   ];
     const images = [
-      "/kapal.jpg",
+      "/Kapal.jpg",
       "/Kendaraan.jpg",
       "/kontainer.jpg",
       "/Kapal_Kargo.jpg",
