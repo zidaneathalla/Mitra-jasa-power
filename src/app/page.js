@@ -5,6 +5,11 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { Truck, Wrench, Package, ChevronLeft, ChevronRight } from "lucide-react";
 import { Star } from "lucide-react";
+import 'leaflet/dist/leaflet.css';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import L from 'leaflet';
+
+
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("pickup");
@@ -14,6 +19,10 @@ export default function Home() {
   const containerRef = useRef(null);
   const [width, setWidth] = useState(0);
   const [x, setX] = useState(0);
+  const [pengiriman, setPengiriman] = useState([]);
+
+
+
 
   const scrollLeft = () => {
     if (containerRef.current) {
@@ -30,6 +39,13 @@ export default function Home() {
       setX(newX);
     }
   };
+
+  const customIcon = new L.Icon({
+    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [0, -41],
+  });
   
   useEffect(() => {
     fetch("http://localhost:8000/api/services")
@@ -87,6 +103,17 @@ export default function Home() {
       setX(0); // Reset posisi scroll saat container berubah
     }
   }, [galleryImages]);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/api/pengiriman")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.data)) {
+          setPengiriman(data.data.slice(0, 5)); // ambil 5 pengiriman terbaru
+        }
+      })
+      .catch((err) => console.error("Error fetching pengiriman:", err));
+  }, []);
 
   return (
     <div className="bg-white text-gray-900 min-h-screen flex flex-col">
@@ -247,13 +274,45 @@ export default function Home() {
 
 
 {/* Testimonials */}
-<div className="py-16 bg-white text-center">
+<div className="py-12 bg-white text-center">
   <h2 className="text-4xl font-bold mb-2">
     Dipercaya oleh Ribuan Pelanggan yang Bahagia
   </h2>
   <p className="text-gray-600 mb-10">
     Kepercayaan pelanggan adalah bukti kualitas layanan kami.
   </p>
+
+    {/* Latest Shipments */}
+
+{/* Leaflet Map */}  
+<div className="w-[80%] mx-auto mt-8 mb-12">
+  <MapContainer
+    center={[-6.2, 106.816666]} // Jabodetabek center
+    zoom={10}
+    scrollWheelZoom={false}
+    className="h-[600px] w-full rounded-xl shadow-lg z-0"
+  >
+    <TileLayer
+      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
+      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    />
+    {pengiriman.map((item, index) => (
+      <Marker
+        key={index}
+        position={[item.latitude, item.longitude]}
+        icon={customIcon}
+      >
+        <Popup>
+          <h1><strong>{item.ke}</strong></h1>
+        </Popup>
+      </Marker>
+    ))}
+  </MapContainer>
+</div>
+
+
+
+
   <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
     {testimonials.map((item, index) => (
       <div
