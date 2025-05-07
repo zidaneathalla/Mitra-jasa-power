@@ -52,7 +52,7 @@ export default function Navbar() {
 
     {/* Button Pesan Sekarang */}
 <div>
-  <Link href="https://wa.me/6282114352721" target="_blank">
+  <Link href="https://wa.me/6281387734025" target="_blank">
     <span className="btn-pesan bg-black text-white px-3 py-1 rounded-lg transition-colors duration-300 hover:bg-[f59e0b]] mr-14">
       Pesan Sekarang
     </span>
