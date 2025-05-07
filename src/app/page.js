@@ -5,11 +5,17 @@ import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { Truck, Wrench, Package, ChevronLeft, ChevronRight } from "lucide-react";
 import { Star } from "lucide-react";
-import 'leaflet/dist/leaflet.css';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import L from 'leaflet';
+import dynamic from "next/dynamic";
 
-
+// Import MapComponent secara dinamis agar hanya dirender di client
+const MapComponent = dynamic(() => import("../components/MapComponent"), { 
+  ssr: false,
+  loading: () => (
+    <div className="h-[600px] w-full rounded-xl shadow-lg bg-gray-100 flex items-center justify-center">
+      Loading map...
+    </div>
+  )
+});
 
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("pickup");
@@ -20,6 +26,8 @@ export default function Home() {
   const [width, setWidth] = useState(0);
   const [x, setX] = useState(0);
   const [pengiriman, setPengiriman] = useState([]);
+
+
 
 
 
@@ -40,12 +48,7 @@ export default function Home() {
     }
   };
 
-  const customIcon = new L.Icon({
-    iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [0, -41],
-  });
+
   
   useEffect(() => {
     fetch("http://localhost:8000/api/services")
@@ -109,11 +112,13 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.data)) {
-          setPengiriman(data.data.slice(0, 5)); // ambil 5 pengiriman terbaru
+          setPengiriman(data.data); // Ambil semua data
         }
       })
       .catch((err) => console.error("Error fetching pengiriman:", err));
   }, []);
+  
+
 
   return (
     <div className="bg-white text-gray-900 min-h-screen flex flex-col">
@@ -286,33 +291,17 @@ export default function Home() {
 
 {/* Leaflet Map */}  
 <div className="w-[80%] mx-auto mt-8 mb-12">
-  <MapContainer
-    center={[-6.2, 106.816666]} // Jabodetabek center
-    zoom={10}
-    scrollWheelZoom={false}
-    className="h-[600px] w-full rounded-xl shadow-lg z-0"
-  >
-    <TileLayer
-      attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-    {pengiriman.map((item, index) => (
-      <Marker
-        key={index}
-        position={[item.latitude, item.longitude]}
-        icon={customIcon}
-      >
-        <Popup>
-          <h1><strong>{item.ke}</strong></h1>
-        </Popup>
-      </Marker>
-    ))}
-  </MapContainer>
-</div>
+      {pengiriman.length > 0 && <MapComponent pengiriman={pengiriman} />}
+    </div>
 
 
 
-
+    <h2 className="text-4xl font-bold mb-2">
+    Kata Mereka Tentang Kami
+  </h2>
+  <p className="text-gray-600 mb-10">
+    Review Pelanggan Tentang Pelayanan Kami
+  </p>
   <div className="flex flex-wrap justify-center gap-6 max-w-6xl mx-auto">
     {testimonials.map((item, index) => (
       <div

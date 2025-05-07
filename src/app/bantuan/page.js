@@ -75,8 +75,8 @@ export default function Bantuan() {
       setSearchResults([]);
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
-          text: 'Pertanyaan tidak ditemukan 😥',
+          title: 'Maaf',
+          text: 'Pertanyaan tidak ditemukan',
         });
     }
   };
